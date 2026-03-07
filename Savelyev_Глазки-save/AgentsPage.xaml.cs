@@ -82,13 +82,20 @@ namespace Savelyev_Глазки_save
                 currentAgent = currentAgent.Where(a => a.AgentType.Title == "ПАО").ToList();
             }
 
-            currentAgent = currentAgent
-                .Where(a => 
-                    a.Title.ToLower().Contains(SearchTextbox.Text.ToLower()) || 
-                    a.Phone.Contains(SearchTextbox.Text) ||
+            string searchDigits = new string(SearchTextbox.Text.Where(char.IsDigit).ToArray());
+
+            if (!string.IsNullOrEmpty(searchDigits))
+            {
+                currentAgent = currentAgent
+                .Where(a =>
+                    a.Title.ToLower().Contains(SearchTextbox.Text.ToLower()) ||
+                    !string.IsNullOrEmpty(a.Phone) && new string(a.Phone.Where(char.IsDigit).ToArray()).Contains(searchDigits) ||
                     a.Email.Contains(SearchTextbox.Text)
                     )
                 .ToList();
+            }
+
+            
 
             AgentsListView.ItemsSource = currentAgent.ToList();
         }
