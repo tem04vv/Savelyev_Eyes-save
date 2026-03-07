@@ -84,17 +84,14 @@ namespace Savelyev_Глазки_save
 
             string searchDigits = new string(SearchTextbox.Text.Where(char.IsDigit).ToArray());
 
-            if (!string.IsNullOrEmpty(searchDigits))
-            {
-                currentAgent = currentAgent
-                .Where(a =>
-                    a.Title.ToLower().Contains(SearchTextbox.Text.ToLower()) ||
-                    !string.IsNullOrEmpty(a.Phone) && new string(a.Phone.Where(char.IsDigit).ToArray()).Contains(searchDigits) ||
-                    a.Email.Contains(SearchTextbox.Text)
-                    )
-                .ToList();
-            }
-
+            
+            currentAgent = currentAgent
+            .Where(a =>
+                a.Title.ToLower().Contains(SearchTextbox.Text.ToLower()) ||
+                (!string.IsNullOrEmpty(searchDigits) && !string.IsNullOrEmpty(a.Phone) && new string(a.Phone.Where(char.IsDigit).ToArray()).Contains(searchDigits)) ||
+                a.Email.Contains(SearchTextbox.Text.ToLower())
+                )
+            .ToList();
             
 
             AgentsListView.ItemsSource = currentAgent.ToList();
