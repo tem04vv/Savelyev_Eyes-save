@@ -20,6 +20,10 @@ namespace Savelyev_Глазки_save
     /// </summary>
     public partial class AgentsPage : Page
     {
+        private List<Agent> _filteredAgents;
+        private int pageSize = 10;
+        private int currentPage = 1;
+        private int TBTotalEntries;
         public AgentsPage()
         {
             InitializeComponent();
@@ -31,6 +35,8 @@ namespace Savelyev_Глазки_save
         private void UpdateAgents()
         {
             var currentAgent = SavelyevEntities.GetContext().Agent.ToList();
+
+            TBTotalEntries = currentAgent.Count;
 
             if (SortComboBox.SelectedIndex == 1)
             {
@@ -82,20 +88,76 @@ namespace Savelyev_Глазки_save
                 currentAgent = currentAgent.Where(a => a.AgentType.Title == "ПАО").ToList();
             }
 
-            string searchDigits = new string(SearchTextbox.Text.Where(char.IsDigit).ToArray());
+            string digits = new string(SearchTextbox.Text.Where(char.IsDigit).ToArray());
 
-            
             currentAgent = currentAgent
             .Where(a =>
                 a.Title.ToLower().Contains(SearchTextbox.Text.ToLower()) ||
-                (!string.IsNullOrEmpty(searchDigits) && !string.IsNullOrEmpty(a.Phone) && new string(a.Phone.Where(char.IsDigit).ToArray()).Contains(searchDigits)) ||
+                (!string.IsNullOrEmpty(digits) && new string(a.Phone.Where(char.IsDigit).ToArray()).Contains(digits)) ||
                 a.Email.Contains(SearchTextbox.Text.ToLower())
                 )
             .ToList();
-            
 
-            AgentsListView.ItemsSource = currentAgent.ToList();
+            _filteredAgents = currentAgent;
+            currentPage = 1;
+            ChangePage();
         }
+
+        private void ChangePage()
+        {
+            PageListBox.Items.Clear();
+
+            int totalPages = (_filteredAgents.Count + pageSize - 1) / pageSize;
+
+            for (int i = 1; i <= totalPages; i++)
+            {
+                PageListBox.Items.Add(i);
+            }
+
+            PageListBox.SelectedItem = currentPage;
+
+            var agentsPage = _filteredAgents.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+            AgentsListView.ItemsSource = agentsPage;
+
+            int viewedRecords = currentPage * pageSize;
+
+            if (viewedRecords > _filteredAgents.Count)
+            {
+                viewedRecords = _filteredAgents.Count;
+            }
+
+            TBlockNumRecords.Text = $"{viewedRecords} из {TBTotalEntries}";
+        }
+
+        private void LeftDirButton_Click(object sender, RoutedEventArgs e)
+        {
+            int totalPages = (_filteredAgents.Count + pageSize - 1) / pageSize;
+            if (currentPage > 1)
+            {
+                currentPage--;
+                ChangePage();
+            }
+        }
+        private void RightDirButton_Click(object sender, RoutedEventArgs e)
+        {
+            int totalPages = (_filteredAgents.Count + pageSize - 1) / pageSize;
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                ChangePage();
+            }
+        }
+
+        private void PageListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PageListBox.SelectedItem is int page && page != currentPage)
+            {
+                currentPage = page;
+                ChangePage();
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage());
@@ -115,5 +177,7 @@ namespace Savelyev_Глазки_save
         {
             UpdateAgents();
         }
+
+        
     }
 }
