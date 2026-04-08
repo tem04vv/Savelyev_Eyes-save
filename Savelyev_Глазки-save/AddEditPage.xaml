@@ -9,6 +9,71 @@
       Title="AddEditPage">
 
     <Grid>
-        <TextBlock Text="hello" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="Наименование" FontSize="15" Height="20" Width="150"></TextBlock>
+            <TextBox Name="TitleTB" Height="20" Width="250" ></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="Адрес" FontSize="15" Height="20" Width="150" ></TextBlock>
+            <TextBox Name="AddressTB" Height="20" Width="250" ></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="Директор" FontSize="15" Height="20" Width="150"></TextBlock>
+            <TextBox Name="DirectorTB" Height="20" Width="250"></TextBox>
+        </StackPanel>
+
+        <TextBlock Text="Логотип" Grid.Row="3" Grid.Column="0" FontSize="15" Height="20" Width="150" HorizontalAlignment="Left"></TextBlock>
+        <Image Name="LogoImage" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Center">
+            <Image.Source>
+                <Binding Path="Logo" TargetNullValue="Res/picture.png"></Binding>
+            </Image.Source>
+        </Image>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="Тип агента" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <ComboBox Height="30" Width="100" FontSize="15" Name="AgentComboType"></ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="Приоритет" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <TextBox Name="PriorityTB" Height="20" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="ИНН" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <TextBox Name="INN_TB" Height="20" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="КПП" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <TextBox Name="KPP_TB"  Height="20" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="Телефон" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <TextBox Name="Phone_TB" Height="20" Width="200"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="Email" FontSize="15" Height="20" Width="100" Margin="10,0,0,0"></TextBlock>
+            <TextBox Name="EmailTB" Height="20" Width="200"></TextBox>
+        </StackPanel>
+
+
+        <Button Content="Изменить" Name="ChangePictureButton" Grid.Row="6" Grid.Column="0" 
+                Click="ChangePictureButton_Click"></Button>
+        <Button Content="Сохранить" Name="SaveButton" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Margin="15,0,0,0" 
+                Click="SaveButton_Click"></Button>
+        <Button Content="Удалить" Name="DeleteButton" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,15,0" Background="Red"
+                Click="DeleteButton_Click"></Button>
     </Grid>
 </Page>

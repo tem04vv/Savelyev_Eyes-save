@@ -22,7 +22,7 @@ namespace Savelyev_Глазки_save
     {
         private List<Agent> _filteredAgents;
         private int pageSize = 10;
-        private int currentPage = 1;
+        private int currentPage;
         private int TBTotalEntries;
         public AgentsPage()
         {
@@ -158,11 +158,6 @@ namespace Savelyev_Глазки_save
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Manager.MainFrame.Navigate(new AddEditPage());
-        }
-
         private void SearchTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateAgents();
@@ -178,6 +173,19 @@ namespace Savelyev_Глазки_save
             UpdateAgents();
         }
 
-        
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            Agent selected = AgentsListView.SelectedItem as Agent;
+
+            if (selected != null)
+            {
+                Manager.MainFrame.Navigate(new AddEditPage(selected.ID));
+            }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage(0));
+        }
     }
 }

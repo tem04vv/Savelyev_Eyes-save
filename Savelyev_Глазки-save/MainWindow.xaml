@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Savelyev_Глазки_save"
         mc:Ignorable="d"
-        Title="Глазки - save" Height="450" Width="800" MinHeight="450" MinWidth="800" FontFamily="Century Gothic" Icon="/Res/Глазки-save.ico">
+        Title="Глазки - save" Height="550" Width="850" MinHeight="450" MinWidth="800" FontFamily="Century Gothic" Icon="/Res/Глазки-save.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75"/>

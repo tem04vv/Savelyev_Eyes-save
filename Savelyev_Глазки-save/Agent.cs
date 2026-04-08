@@ -34,6 +34,18 @@ namespace Savelyev_Глазки_save
         public string INN { get; set; }
         public string KPP { get; set; }
     
+        public string AgentPhotoPath
+        {
+            get
+            {
+                if (Logo == null)
+                {
+                    return null;
+                }
+
+                return Logo;
+            }
+        }
         public int SalesForYear
         {
             get
