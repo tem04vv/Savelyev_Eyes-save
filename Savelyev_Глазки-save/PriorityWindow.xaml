@@ -1,0 +1,43 @@
+﻿<Window x:Class="Savelyev_Глазки_save.PriorityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Savelyev_Глазки_save"
+        mc:Ignorable="d"
+        Title="Изменение приоритета" Height="200" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Изменить приоритет:" Grid.Column="1" FontSize="17" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="33,0,0,10"></TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="PriorityTextBox" Grid.Column="1" Height="25" Width="250" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,5,0,0" ></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Подтвердить" Name="OkButton" Grid.Column="0" FontSize="18" Click="OkButton_Click"></Button>
+            <Button Content="Отмена" Name="CancelButton" Grid.Column="1" FontSize="18" Click="CancelButton_Click"></Button>
+        </Grid>
+        
+    </Grid>
+</Window>

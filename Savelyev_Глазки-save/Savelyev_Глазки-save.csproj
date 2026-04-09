@@ -85,6 +85,9 @@
     <Compile Include="MaterialType.cs">
       <DependentUpon>SavelyevModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PriorityWindow.xaml.cs">
+      <DependentUpon>PriorityWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Product.cs">
       <DependentUpon>SavelyevModel.tt</DependentUpon>
     </Compile>
@@ -99,6 +102,9 @@
     </Compile>
     <Compile Include="ProductType.cs">
       <DependentUpon>SavelyevModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesHistoryWindow.xaml.cs">
+      <DependentUpon>SalesHistoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SavelyevModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -150,6 +156,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PriorityWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SalesHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager.cs" />

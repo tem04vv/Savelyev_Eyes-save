@@ -53,7 +53,7 @@
             </StackPanel>
         </Grid>
 
-        <ListView Name="AgentsListView" Grid.Row="1">
+        <ListView Name="AgentsListView" Grid.Row="1" SelectionMode="Extended" SelectionChanged="AgentsListView_SelectionChanged">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Редактировать" Name="EditButton" Click="EditButton_Click"></MenuItem>
@@ -121,5 +121,9 @@
             <Button Name="RightDirButton" Content="&gt;" Height="20" Width="20" Click="RightDirButton_Click"/>
         </StackPanel>
         <Button Grid.Row="2" Content="Добавить агента" Name="AddButton" HorizontalAlignment="Left" Margin="10,0,0,0" Click="AddButton_Click"></Button>
+
+        <Button Grid.Row="2" Content="Изменить приоритет на ..." Name="ChangePriorityButton" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                Margin="210,0,0,0" Width="230" FontSize="16" Click="ChangePriorityButton_Click" Visibility="Collapsed"></Button>
+       
     </Grid>
 </Page>

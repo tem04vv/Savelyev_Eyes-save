@@ -83,89 +83,6 @@ namespace Savelyev_Глазки_save
             }
         }
 
-        //private void SaveButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Agent currentAgent;
-
-        //    if (_editingAgentID == 0)
-        //    {
-        //        currentAgent = new Agent();
-
-        //        SavelyevEntities.GetContext().Agent.Add(currentAgent);
-        //    }
-        //    else
-        //    {
-        //        currentAgent = SavelyevEntities.GetContext().Agent.FirstOrDefault(a => a.ID == _editingAgentID);
-        //    }
-
-        //    currentAgent.Title = TitleTB.Text;
-        //    currentAgent.Address = AddressTB.Text;
-        //    currentAgent.DirectorName = DirectorTB.Text;
-        //    //currentAgent.Priority = int.Parse(PriorityTB.Text);
-        //    int priority;
-        //    if (!int.TryParse(PriorityTB.Text, out priority))
-        //    {
-        //        MessageBox.Show("Приоритет должен быть числом");
-        //        return;
-        //    }
-        //    currentAgent.Priority = priority;
-        //    currentAgent.INN = INN_TB.Text;
-        //    currentAgent.KPP = KPP_TB.Text;
-        //    currentAgent.Phone = Phone_TB.Text;
-        //    currentAgent.Email = EmailTB.Text;
-        //    currentAgent.AgentTypeID = (int)AgentComboType.SelectedValue;
-
-        //    StringBuilder errors = new StringBuilder();
-        //    if (string.IsNullOrWhiteSpace(currentAgent.Title))
-        //        errors.AppendLine("Укажите наименование агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.Address))
-        //        errors.AppendLine("Укажите адрес агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.DirectorName))
-        //        errors.AppendLine("Укажите фамилию директора");
-        //    if (AgentComboType.SelectedItem == null)
-        //        errors.AppendLine("Укажите тип агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.Priority.ToString()))
-        //        errors.AppendLine("Укажите приоритет агента");
-        //    if (currentAgent.Priority <= 0)
-        //        errors.AppendLine("Укажите положительный приоритет агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.INN))
-        //        errors.AppendLine("Укажите ИНН агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.KPP))
-        //        errors.AppendLine("Укажите КПП агента");
-        //    if (string.IsNullOrWhiteSpace(currentAgent.Phone))
-        //        errors.AppendLine("Укажите телефон агента");
-        //    else
-        //    {
-        //        string ph = currentAgent.Phone.Replace("(", "").Replace("-", "").Replace("+", "");
-        //        if (ph.Length < 2)
-        //            errors.AppendLine("Укажите правильно телефон агента");
-        //        else if (((ph[1] == '9' || ph[1] == '4' || ph[1] == '8') && ph.Length != 11) || (ph[1] == '3' && ph.Length != 12))
-        //            errors.AppendLine("Укажите правильно телефон агента");
-        //    }
-        //    if (string.IsNullOrWhiteSpace(currentAgent.Email))
-        //        errors.AppendLine("Укажите почту агента");
-
-        //    if (errors.Length > 0)
-        //    {
-        //        MessageBox.Show(errors.ToString());
-        //        return;
-        //    }
-
-        //    if (!string.IsNullOrEmpty(_newLogoPath))
-        //        currentAgent.Logo = _newLogoPath;
-
-        //    try
-        //    {
-        //        SavelyevEntities.GetContext().SaveChanges();
-        //        MessageBox.Show("Информация сохранена");
-        //        Manager.MainFrame.Navigate(new AgentsPage());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message.ToString());
-        //    }
-
-        //}
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Agent currentAgent;
@@ -173,7 +90,6 @@ namespace Savelyev_Глазки_save
             if (_editingAgentID == 0)
             {
                 currentAgent = new Agent();
-                SavelyevEntities.GetContext().Agent.Add(currentAgent);
             }
             else
             {
@@ -231,11 +147,17 @@ namespace Savelyev_Глазки_save
             if (string.IsNullOrWhiteSpace(EmailTB.Text))
                 errors.AppendLine("Укажите почту агента");
 
+            if (!string.IsNullOrEmpty(_newLogoPath))
+            {
+                currentAgent.Logo = _newLogoPath;
+            }
+
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
                 return;
             }
+
 
             currentAgent.Title = TitleTB.Text;
             currentAgent.Address = AddressTB.Text;
@@ -247,10 +169,11 @@ namespace Savelyev_Глазки_save
             currentAgent.Email = EmailTB.Text;
             currentAgent.AgentTypeID = (int)AgentComboType.SelectedValue;
 
-            if (!string.IsNullOrEmpty(_newLogoPath))
+            if (_editingAgentID == 0)
             {
-                currentAgent.Logo = _newLogoPath;
+                SavelyevEntities.GetContext().Agent.Add(currentAgent);
             }
+
             try
             {
                 SavelyevEntities.GetContext().SaveChanges();
@@ -277,15 +200,35 @@ namespace Savelyev_Глазки_save
                 return;
             }
 
-            MessageBoxResult result = MessageBox.Show("Вы действительно хотите удалить агента?", "Подтверждения удаления агента",
+            if (SavelyevEntities.GetContext().ProductSale.Any(ps => ps.AgentID == currentAgent.ID))
+            {
+                MessageBox.Show("Невозможно удалить агента, так как у него есть информация о реализованной продукции.");
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show("Вы действительно хотите удалить агента?", "Подтверждение удаления",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
+                var shops = SavelyevEntities.GetContext().Shop.Where(s => s.AgentID == currentAgent.ID).ToList();
+                SavelyevEntities.GetContext().Shop.RemoveRange(shops);
+
+                var histories = SavelyevEntities.GetContext().AgentPriorityHistory.Where(h => h.AgentID == currentAgent.ID).ToList();
+                SavelyevEntities.GetContext().AgentPriorityHistory.RemoveRange(histories);
+
                 SavelyevEntities.GetContext().Agent.Remove(currentAgent);
+
                 SavelyevEntities.GetContext().SaveChanges();
                 Manager.MainFrame.Navigate(new AgentsPage());
             }
         }
+        private void SalesHistory_Click(object sender, RoutedEventArgs e)
+        {
+            SalesHistoryWindow window = new SalesHistoryWindow(_editingAgentID);
+            window.Show();
+        }
+
+        
     }
 }

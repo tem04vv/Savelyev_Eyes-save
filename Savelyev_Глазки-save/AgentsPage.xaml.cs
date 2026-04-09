@@ -187,5 +187,59 @@ namespace Savelyev_Глазки_save
         {
             Manager.MainFrame.Navigate(new AddEditPage(0));
         }
+
+        private void ChangePriorityButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedAgents = AgentsListView.SelectedItems.Cast<Agent>().ToList();
+
+            int maxPriority = selectedAgents.Max(a => a.Priority);
+
+            PriorityWindow window = new PriorityWindow(maxPriority);
+           
+
+            if (window.ShowDialog() == true)
+            {
+                int newPriority = window.NewPriority;
+
+                foreach (Agent agent in selectedAgents)
+                {
+                    agent.Priority = newPriority;
+                }
+                SavelyevEntities.GetContext().SaveChanges();
+                UpdateAgents();
+                MessageBox.Show("Приоритет изменен");
+
+                foreach (Agent agent in selectedAgents)
+                {
+                    int oldPriority = agent.Priority;
+                    agent.Priority = newPriority;
+
+                    AgentPriorityHistory history = new AgentPriorityHistory
+                    {
+                        AgentID = agent.ID,
+                        ChangeDate = DateTime.Now,
+                        PriorityValue = newPriority
+                    };
+                    SavelyevEntities.GetContext().AgentPriorityHistory.Add(history);
+                }
+                AgentsListView.SelectedItems.Clear();
+            }
+        }
+
+        private void AgentsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedCount = AgentsListView.SelectedItems.Count;
+
+            if (selectedCount >= 2)
+            {
+                ChangePriorityButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ChangePriorityButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        
     }
 }
